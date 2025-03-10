@@ -8,6 +8,7 @@
 
 #include <CommandExecuter/CommandExecuter.h>
 
+#include <Commands/ClickAndHoldOnItem.h>
 #include <Commands/ClickOnItem.h>
 #include <Commands/CustomCmd.h>
 #include <Commands/DragBegin.h>
@@ -95,6 +96,11 @@ void TestServer::mouseBeginDrag(ItemPath path)
 void TestServer::mouseEndDrag(ItemPath path)
 {
     m_cmdExec->enqueueCommand<cmd::DragEnd>(path);
+}
+
+void TestServer::mouseClickAndHold(ItemPath path, std::chrono::milliseconds holdTime)
+{
+    m_cmdExec->enqueueCommand<cmd::ClickAndHoldOnItem>(path, holdTime, spix::MouseButtons::Left);
 }
 
 void TestServer::mouseDropUrls(ItemPath path, const std::vector<std::string>& urls)

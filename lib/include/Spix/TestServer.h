@@ -52,6 +52,7 @@ public:
     void mouseClick(ItemPath path, Point proportion, Point offset);
     void mouseBeginDrag(ItemPath path);
     void mouseEndDrag(ItemPath path);
+    void mouseClickAndHold(ItemPath path, std::chrono::milliseconds holdTime);
     void mouseDropUrls(ItemPath path, const std::vector<std::string>& urls);
     void genericCommand(std::string command, std::string payload);
 
