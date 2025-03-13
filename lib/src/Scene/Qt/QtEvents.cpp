@@ -103,7 +103,7 @@ void QtEvents::mouseDown(Item* item, Point loc, MouseButton button)
     Qt::MouseButtons activeButtons = getQtMouseButtonValue(m_pressedMouseButtons);
 
     QMouseEvent* event
-        = new QMouseEvent(QEvent::MouseButtonPress, windowLoc, window->position().toPointF(), eventCausingButton, activeButtons, Qt::NoModifier);
+        = new QMouseEvent(QEvent::MouseButtonPress, windowLoc, windowLoc, eventCausingButton, activeButtons, Qt::NoModifier);
     QGuiApplication::postEvent(window, event);
 }
 
@@ -127,7 +127,7 @@ void QtEvents::mouseUp(Item* item, Point loc, MouseButton button)
 #endif
 
     QMouseEvent* event
-        = new QMouseEvent(QEvent::MouseButtonRelease, windowLoc, window->position().toPointF(), eventCausingButton, Qt::NoButton, Qt::NoModifier);
+        = new QMouseEvent(QEvent::MouseButtonRelease, windowLoc, windowLoc, eventCausingButton, Qt::NoButton, Qt::NoModifier);
     QGuiApplication::postEvent(window, event);
 }
 
