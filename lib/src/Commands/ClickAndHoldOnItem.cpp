@@ -20,7 +20,7 @@ ClickAndHoldOnItem::ClickAndHoldOnItem(ItemPosition path, std::chrono::milliseco
 
 void ClickAndHoldOnItem::execute(CommandEnvironment& env)
 {
-    pressOrRelease(env, true);
+    env.scene().events().mouseUp(m_item.get(), m_mousePoint, m_mouseButton);
 }
 
 bool ClickAndHoldOnItem::canExecuteNow(CommandEnvironment& env)
@@ -28,31 +28,23 @@ bool ClickAndHoldOnItem::canExecuteNow(CommandEnvironment& env)
     if (!m_timerInitialized) {
         m_timerInitialized = true;
         m_startTime = std::chrono::steady_clock::now();
-        pressOrRelease(env, false);
+
+        auto path = m_position.itemPath();
+        m_item = env.scene().itemAtPath(path);
+
+        if (!m_item) {
+            env.state().reportError("ClickAndHoldOnItem: Item not found: " + path.string());
+            return false;
+        }
+
+        auto size = m_item->size();
+        m_mousePoint = m_position.positionForItemSize(size);
+        env.scene().events().mouseDown(m_item.get(), m_mousePoint, m_mouseButton);
         return false;
     }
 
     auto timeSinceStart = std::chrono::steady_clock::now() - m_startTime;
     return timeSinceStart >= m_holdTime;
-}
-
-void ClickAndHoldOnItem::pressOrRelease(CommandEnvironment& env, bool isRelease)
-{
-    auto path = m_position.itemPath();
-    auto item = env.scene().itemAtPath(path);
-
-    if (!item) {
-        env.state().reportError("ClickAndHoldOnItem: Item not found: " + path.string());
-        return;
-    }
-
-    auto size = item->size();
-    auto mousePoint = m_position.positionForItemSize(size);
-    if (!isRelease) {
-        env.scene().events().mouseDown(item.get(), mousePoint, m_mouseButton);
-    } else {
-        env.scene().events().mouseUp(item.get(), mousePoint, m_mouseButton);
-    }
 }
 
 } // namespace cmd
