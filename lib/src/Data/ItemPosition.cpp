@@ -6,6 +6,8 @@
 
 #include <Spix/Data/ItemPosition.h>
 
+#include <cmath>
+
 namespace spix {
 
 ItemPosition::ItemPosition(ItemPath path, Point proportion, Point offset)
@@ -22,7 +24,7 @@ const ItemPath& ItemPosition::itemPath() const
 
 Point ItemPosition::positionForItemSize(const Size& size) const
 {
-    return {size.width * m_proportion.x + m_offset.x, size.height * m_proportion.y + m_offset.y};
+    return {std::round(size.width * m_proportion.x + m_offset.x), std::floor(size.height * m_proportion.y + m_offset.y)};
 }
 
 } // namespace spix
