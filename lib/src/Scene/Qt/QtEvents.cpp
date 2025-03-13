@@ -127,7 +127,7 @@ void QtEvents::mouseUp(Item* item, Point loc, MouseButton button)
 #endif
 
     QMouseEvent* event
-        = new QMouseEvent(QEvent::MouseButtonRelease, windowLoc, eventCausingButton, activeButtons, Qt::NoModifier);
+        = new QMouseEvent(QEvent::MouseButtonRelease, windowLoc, eventCausingButton, Qt::NoButton, Qt::NoModifier);
     QGuiApplication::postEvent(window, event);
 }
 
